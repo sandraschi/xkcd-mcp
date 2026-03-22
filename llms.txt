@@ -1,0 +1,5 @@
+# xkcd-mcp
+
+- Source: https://github.com/sandraschi/xkcd-mcp
+- Tool: xkcd_comic(operation: current|by_number|random, comic_number optional).
+- HTTP: GET /health, POST /api/comic; MCP /mcp on port 10778; SPA 10779.

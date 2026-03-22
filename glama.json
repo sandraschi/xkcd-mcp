@@ -1,0 +1,5 @@
+{
+  "name": "xkcd-mcp",
+  "version": "0.1.0",
+  "description": "xkcd comics via official JSON API (current / by_number / random); FastMCP 3.1; no scraping."
+}
