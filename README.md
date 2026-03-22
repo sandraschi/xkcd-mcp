@@ -25,6 +25,10 @@ uv run xkcd-mcp --serve
 
 **SPA:** `.\web_sota\start.ps1` → `http://127.0.0.1:10779/`
 
+### Web UI
+
+Comic-panel **hero** (stick-figure SVG, speech bubble, meta “alt text” caption), **Comic Neue** title treatment, and the same **Current / Random / #** actions against `POST /api/comic`. Dark glass styling; no scraping — same official JSON path as the MCP tool.
+
 ## License
 
 MIT
