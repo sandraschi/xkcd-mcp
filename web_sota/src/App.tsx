@@ -1,5 +1,53 @@
 import { useCallback, useState } from "react";
 
+function HeroStickFigures() {
+  return (
+    <svg
+      className="hero__art"
+      viewBox="0 0 220 130"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <title>Decorative stick figures</title>
+      {/* Ground */}
+      <path
+        d="M8 118c40-8 85-6 130 2 28 5 55 12 74 8"
+        stroke="rgba(244,239,228,0.35)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      {/* Left figure — waving at API */}
+      <circle cx="42" cy="38" r="11" stroke="#f4efe4" strokeWidth="2.5" />
+      <path d="M42 49v32M42 81l-14 22M42 81l16 20" stroke="#f4efe4" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M42 58l-18-10M42 58l20-6" stroke="#f4efe4" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Tiny server doodle */}
+      <rect x="68" y="72" width="38" height="44" rx="4" stroke="#8ec5ff" strokeWidth="2" fill="rgba(100,160,255,0.08)" />
+      <path d="M76 82h24M76 92h24M76 102h18" stroke="#8ec5ff" strokeWidth="1.8" strokeLinecap="round" opacity="0.85" />
+      <text x="74" y="68" fill="#f4efe4" fontSize="11" fontFamily="Comic Neue, Segoe UI, sans-serif" fontStyle="italic">
+        JSON
+      </text>
+      {/* Right figure — skeptical */}
+      <circle cx="168" cy="44" r="11" stroke="#f4efe4" strokeWidth="2.5" />
+      <path d="M168 55v30M168 85l-12 18M168 85l14 18" stroke="#f4efe4" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M168 64l16 4M168 64l-14 8" stroke="#f4efe4" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Speech bubble */}
+      <path
+        d="M118 18h78a6 6 0 016 6v22a6 6 0 01-6 6h-44l-10 12-2-12h-22a6 6 0 01-6-6V24a6 6 0 016-6z"
+        fill="var(--hero-paper)"
+        stroke="var(--hero-ink)"
+        strokeWidth="2"
+      />
+      <text x="128" y="38" fill="var(--hero-ink)" fontSize="11.5" fontFamily="Comic Neue, Segoe UI, sans-serif">
+        MCP, explain this
+      </text>
+      {/* Stars — whimsy */}
+      <path d="M22 12l2 4 4 1-4 2-2 5-2-5-4-2 4-1 2-4z" fill="#ffd278" opacity="0.9" />
+      <path d="M198 88l1.5 3 3 .8-3 1.5-1.5 3.5-1.5-3.5-3-1.5 3-.8 1.5-3z" fill="#ffd278" opacity="0.65" />
+    </svg>
+  );
+}
+
 type Comic = {
   num: number;
   title?: string;
@@ -44,21 +92,26 @@ export default function App() {
 
   return (
     <div style={{ maxWidth: 720, margin: "0 auto", padding: "1.5rem" }}>
-      <header
-        style={{
-          marginBottom: "1.25rem",
-          padding: "1.1rem 1.25rem",
-          borderRadius: 12,
-          background: "linear-gradient(145deg, rgba(40,48,64,.9), rgba(20,24,32,.95))",
-          border: "1px solid rgba(120,140,180,.25)",
-        }}
-      >
-        <h1 style={{ margin: "0 0 .35rem", fontSize: "1.35rem" }}>xkcd-mcp</h1>
-        <p style={{ margin: 0, opacity: 0.88, fontSize: "0.92rem" }}>
-          Official JSON API only — no scraping.{" "}
-          <a href="https://github.com/sandraschi/xkcd-mcp" target="_blank" rel="noopener noreferrer">
-            Repo
-          </a>
+      <header className="hero">
+        <div className="hero__inner">
+          <div className="hero__copy">
+            <span className="hero__badge">Model context protocol</span>
+            <h1 className="hero__title">xkcd-mcp</h1>
+            <p className="hero__tagline">
+              Comics for your LLM. Official API, unofficial amount of stick-figure drama.
+            </p>
+            <p className="hero__footnote">
+              Official JSON API only — no scraping.{" "}
+              <a href="https://github.com/sandraschi/xkcd-mcp" target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>
+            </p>
+          </div>
+          <HeroStickFigures />
+        </div>
+        <p className="hero__caption">
+          Alt text: A tiny server labeled “JSON” receives enthusiastic waves while someone in a speech bubble negotiates
+          with the universe. Hover tooltips not included; that’s what the comic alt is for.
         </p>
       </header>
 
