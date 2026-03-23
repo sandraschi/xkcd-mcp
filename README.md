@@ -1,6 +1,6 @@
 # xkcd-mcp
 
-**xkcd comics via the official JSON API only** (`/info.0.json`) — **no HTML scraping**, no Explainxkcd body fetch. MCP tool + small Vite UI.
+**xkcd comics via the official JSON API only** (`/info.0.json`) — **no HTML scraping**, no Explainxkcd body fetch. MCP tool plus a small Vite UI: comic-panel hero (stick-figure SVG, speech bubble, meta caption), **Comic Neue** title, **Current / Random / #** via `POST /api/comic`. Same official JSON as the tool.
 
 **Repo:** [github.com/sandraschi/xkcd-mcp](https://github.com/sandraschi/xkcd-mcp)
 
@@ -24,10 +24,6 @@ uv run xkcd-mcp --serve
 - **Env:** `XKCD_MCP_HOST`, `XKCD_MCP_PORT` (default **10778**), `XKCD_MCP_HTTP_PATH` (default `/mcp`)
 
 **SPA:** `.\web_sota\start.ps1` → `http://127.0.0.1:10779/`
-
-### Web UI
-
-Comic-panel **hero** (stick-figure SVG, speech bubble, meta “alt text” caption), **Comic Neue** title treatment, and the same **Current / Random / #** actions against `POST /api/comic`. Dark glass styling; no scraping — same official JSON path as the MCP tool.
 
 ## License
 
