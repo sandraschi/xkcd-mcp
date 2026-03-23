@@ -1,29 +1,49 @@
 # xkcd-mcp
 
-**xkcd comics via the official JSON API only** (`/info.0.json`) — **no HTML scraping**, no Explainxkcd body fetch. MCP tool plus a small Vite UI: comic-panel hero (stick-figure SVG, speech bubble, meta caption), **Comic Neue** title, **Current / Random / #** via `POST /api/comic`. Same official JSON as the tool.
+xkcd via the **official JSON API** only (`/info.0.json`). **No** HTML scraping; **no** Explainxkcd body fetch.
+
+**Ships with**
+
+- **MCP** — `xkcd_comic` (`current`, `by_number`, `random`)
+- **Web UI** — Vite SPA: comic-panel hero (stick SVG + speech bubble), Comic Neue headings, Current / Random / # → `POST /api/comic` (same JSON as the tool)
 
 **Repo:** [github.com/sandraschi/xkcd-mcp](https://github.com/sandraschi/xkcd-mcp)
 
-## MCP tool
+---
 
-| `xkcd_comic` | Args |
-|--------------|------|
-| `operation` | `current` \| `by_number` \| `random` |
-| `comic_number` | Required for `by_number` |
+## MCP tool — `xkcd_comic`
 
-Returns `comic`: `num`, `title`, `safe_title`, `alt`, `img`, `xkcd_url`, `explainxkcd_url` (wiki link only), `json_source`, etc.
+| Argument | Values / notes |
+|----------|----------------|
+| `operation` | `current` · `by_number` · `random` |
+| `comic_number` | Required when `operation` is `by_number` |
+
+**Returns** (among other fields): `num`, `title`, `safe_title`, `alt`, `img`, `xkcd_url`, `explainxkcd_url` (wiki link only), `json_source`.
+
+---
 
 ## Run
+
+### Server (API + MCP)
 
 ```powershell
 uv sync
 uv run xkcd-mcp --serve
 ```
 
-- **API:** `http://127.0.0.1:10778` — `/health`, `/docs`, MCP **`http://127.0.0.1:10778/mcp`**
+- **HTTP:** `http://127.0.0.1:10778` — `/health`, `/docs`
+- **MCP:** `http://127.0.0.1:10778/mcp`
 - **Env:** `XKCD_MCP_HOST`, `XKCD_MCP_PORT` (default **10778**), `XKCD_MCP_HTTP_PATH` (default `/mcp`)
 
-**SPA:** `.\web_sota\start.ps1` → `http://127.0.0.1:10779/`
+### Web UI (SPA)
+
+```powershell
+.\web_sota\start.ps1
+```
+
+Open **http://127.0.0.1:10779/**
+
+---
 
 ## License
 
