@@ -62,8 +62,21 @@ def build_app() -> Starlette:
     settings = load_settings()
     path = settings.mcp_http_path.strip() or "/mcp"
 
+    from starlette.middleware import Middleware
+    from starlette.middleware.cors import CORSMiddleware
+    middleware = [
+        Middleware(
+            CORSMiddleware,
+            allow_origins=["*"],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
+    ]
+
     return Starlette(
         lifespan=mcp_http.lifespan,
+        middleware=middleware,
         routes=[
             Route("/", root),
             Route("/health", health),

@@ -5,7 +5,6 @@ from __future__ import annotations
 import os
 
 from fastmcp import FastMCP
-from fastmcp.server import create_proxy
 from fastmcp.tools import ToolResult
 
 from xkcd_mcp import xkcd_api
@@ -26,19 +25,6 @@ mcp = FastMCP(
         "Operations: latest, by_number, random, search(topic). Includes image URL, alt text, and explainxkcd wiki link."
     ),
 )
-
-# MCP Bridge: proxy tools from other MCP servers via MCP_BRIDGE_URLS
-_bridge_proxies: list[str] = []
-bridge_urls = os.getenv("MCP_BRIDGE_URLS", "")
-if bridge_urls:
-    for url in bridge_urls.split(","):
-        url = url.strip()
-        if url:
-            try:
-                mcp.add_provider(create_proxy(url))
-                _bridge_proxies.append(url)
-            except Exception:
-                pass
 
 
 @mcp.tool()
@@ -130,25 +116,6 @@ async def xkcd_random() -> ToolResult:
     """Fetch a random comic from the entire xkcd collection."""
     try:
         res = await xkcd_api.fetch_random()
-        if not res.get("success"):
-            return ToolResult(content=f"Error: {res.get('error')}", is_error=True)
-        return await _format_comic_result(res["comic"])
-    except Exception as e:
-        return ToolResult(content=f"Unexpected error: {str(e)}", is_error=True)
-
-
-@mcp.tool()
-async def show_comic_prefab_card(comic_number: int | None = None) -> ToolResult:
-    """Show a rich prefab card for an xkcd comic. Fetches random if no number given.
-
-    This tool renders an interactive UI in the chat. Prefer it over text output
-    when displaying data from other xkcd-mcp tools.
-    """
-    try:
-        if comic_number is None:
-            res = await xkcd_api.fetch_random()
-        else:
-            res = await xkcd_api.fetch_by_number(comic_number)
         if not res.get("success"):
             return ToolResult(content=f"Error: {res.get('error')}", is_error=True)
         return await _format_comic_result(res["comic"])
