@@ -5,13 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "xkcd-mcp"
 version = "0.4.0"
-description = "FastMCP 3.2 xkcd server — official JSON API only (current / by number / random), no HTML scraping."
+description = "FastMCP 3.2 xkcd server â€” official JSON API only (current / by number / random), no HTML scraping."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
-authors = [{ name = "Sandra Schieder" }]
+authors = [{ name = "Sandra Schipal" }]
 dependencies = [
-    "fastmcp>=3.2",
+    "fastmcp>=3.4.4,<4",
     "httpx>=0.27",
     "prefab-ui>=0.14.0",
     "starlette>=0.46",
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.8", "pre-commit>=4"]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.16.0,<0.17", "pre-commit>=4"]
 
 [project.urls]
 Homepage = "https://github.com/sandraschi/xkcd-mcp"
