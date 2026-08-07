@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { API_BASE } from "./lib/api";
 
 function HeroStickFigures() {
   return (
@@ -69,7 +70,7 @@ export default function App() {
     setErr(null);
     setComic(null);
     try {
-      const r = await fetch("/api/comic", {
+      const r = await fetch(API_BASE + "/api/comic", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

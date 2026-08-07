@@ -50,7 +50,7 @@ async def xkcd_latest() -> ToolResult:
             return ToolResult(content=f"Error: {res.get('error')}", is_error=True)
         return await _format_comic_result(res["comic"])
     except Exception as e:
-        return ToolResult(content=f"Unexpected error: {str(e)}", is_error=True)
+        return ToolResult(content=f"Unexpected error: {e!s}", is_error=True)
 
 
 @mcp.tool()
@@ -62,7 +62,7 @@ async def xkcd_get(comic_number: int) -> ToolResult:
             return ToolResult(content=f"Error: {res.get('error')}", is_error=True)
         return await _format_comic_result(res["comic"])
     except Exception as e:
-        return ToolResult(content=f"Unexpected error: {str(e)}", is_error=True)
+        return ToolResult(content=f"Unexpected error: {e!s}", is_error=True)
 
 
 @mcp.tool()
@@ -122,7 +122,7 @@ async def xkcd_search(query: str) -> ToolResult:
 
         return ToolResult(content=text_summary, structured_content=structured_content)
     except Exception as e:
-        return ToolResult(content=f"Search failed: {str(e)}", is_error=True)
+        return ToolResult(content=f"Search failed: {e!s}", is_error=True)
 
 
 @mcp.tool()
@@ -134,7 +134,7 @@ async def xkcd_random() -> ToolResult:
             return ToolResult(content=f"Error: {res.get('error')}", is_error=True)
         return await _format_comic_result(res["comic"])
     except Exception as e:
-        return ToolResult(content=f"Unexpected error: {str(e)}", is_error=True)
+        return ToolResult(content=f"Unexpected error: {e!s}", is_error=True)
 
 
 @mcp.tool()
@@ -153,7 +153,7 @@ async def show_comic_prefab_card(comic_number: int | None = None) -> ToolResult:
             return ToolResult(content=f"Error: {res.get('error')}", is_error=True)
         return await _format_comic_result(res["comic"])
     except Exception as e:
-        return ToolResult(content=f"Unexpected error: {str(e)}", is_error=True)
+        return ToolResult(content=f"Unexpected error: {e!s}", is_error=True)
 
 
 @mcp.tool()
@@ -193,9 +193,7 @@ async def xkcd_help() -> ToolResult:
                     with Text():
                         Text("🎨 Web UI", css_class="font-mono text-sm opacity-60")
                         Text("Port 10779", css_class="text-xl")
-                Text(
-                    "\nUse `xkcd_latest` or `xkcd_random` to get started!", css_class="mt-4 italic"
-                )
+                Text("\nUse `xkcd_latest` or `xkcd_random` to get started!", css_class="mt-4 italic")
 
         structured_content = PrefabApp(view=view, title="xkcd-mcp Help")
 
@@ -210,12 +208,7 @@ async def _format_comic_result(comic: dict) -> ToolResult:
     num = comic["num"]
 
     label = f"xkcd #{num}: {title}"
-    text_summary = (
-        f"{label}\n"
-        f"Image: {img_url}\n"
-        f"Alt: {alt}\n"
-        f"Links: {comic['xkcd_url']} | {comic['explainxkcd_url']}"
-    )
+    text_summary = f"{label}\nImage: {img_url}\nAlt: {alt}\nLinks: {comic['xkcd_url']} | {comic['explainxkcd_url']}"
 
     structured_content = None
     if HAS_PREFAB:

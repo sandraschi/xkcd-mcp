@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from typing import Any
 
 from starlette.applications import Starlette
@@ -14,29 +13,33 @@ from xkcd_mcp.config import load_settings
 from xkcd_mcp.server import mcp
 from xkcd_mcp.xkcd_api import fetch_by_number, fetch_current, fetch_random
 
-mcp_http = mcp.http_app(path="/mcp")
+mcp_http = mcp.http_app(path="/")
 
 
 async def health(request: Request) -> JSONResponse:
     settings = load_settings()
-    return JSONResponse({
-        "ok": True,
-        "service": "xkcd-mcp",
-        "version": "0.3.0",
-        "port": settings.port,
-        "mcp_http": f"http://{settings.host}:{settings.port}{settings.mcp_http_path}",
-    })
+    return JSONResponse(
+        {
+            "ok": True,
+            "service": "xkcd-mcp",
+            "version": "0.3.0",
+            "port": settings.port,
+            "mcp_http": f"http://{settings.host}:{settings.port}{settings.mcp_http_path}",
+        }
+    )
 
 
 async def root(request: Request) -> JSONResponse:
     settings = load_settings()
-    return JSONResponse({
-        "service": "xkcd-mcp",
-        "version": "0.3.0",
-        "docs": f"http://{settings.host}:{settings.port}/docs",
-        "mcp_http": f"http://{settings.host}:{settings.port}{settings.mcp_http_path}",
-        "webapp": "http://127.0.0.1:10779",
-    })
+    return JSONResponse(
+        {
+            "service": "xkcd-mcp",
+            "version": "0.3.0",
+            "docs": f"http://{settings.host}:{settings.port}/docs",
+            "mcp_http": f"http://{settings.host}:{settings.port}{settings.mcp_http_path}",
+            "webapp": "http://127.0.0.1:10779",
+        }
+    )
 
 
 async def api_comic(request: Request) -> JSONResponse:
@@ -64,6 +67,7 @@ def build_app() -> Starlette:
 
     from starlette.middleware import Middleware
     from starlette.middleware.cors import CORSMiddleware
+
     middleware = [
         Middleware(
             CORSMiddleware,
