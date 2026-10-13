@@ -1,4 +1,4 @@
-"""Starlette + MCP HTTP — no FastAPI, no Pydantic (fleet standard)."""
+"""Starlette + MCP HTTP - no FastAPI, no Pydantic (fleet standard)."""
 
 from __future__ import annotations
 

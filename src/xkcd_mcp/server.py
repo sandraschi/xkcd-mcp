@@ -1,4 +1,4 @@
-"""FastMCP 3.2 — xkcd tools."""
+"""FastMCP 3.2 - xkcd tools."""
 
 from __future__ import annotations
 
