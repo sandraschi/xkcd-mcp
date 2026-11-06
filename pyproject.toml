@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "xkcd-mcp"
 version = "0.4.0"
-description = "FastMCP 3.2 xkcd server â€” official JSON API only (current / by number / random), no HTML scraping."
+description = "FastMCP 3.2 xkcd server - official JSON API only (current / by number / random), no HTML scraping."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
