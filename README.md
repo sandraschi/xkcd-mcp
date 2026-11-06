@@ -10,8 +10,6 @@
 
 > 📖 **[Installation Guide](INSTALL.md)** — quick start, manual setup, and troubleshooting
 
-**MODEL CONTEXT PROTOCOL**  *fine print sold separately*
-
 ---
 
 ### The part humans read first
