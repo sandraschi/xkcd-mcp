@@ -1,0 +1,16 @@
+INFO:     127.0.0.1:64335 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50633 - "POST /api/comic HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59557 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50591 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50651 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58898 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63470 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63508 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65220 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65244 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63139 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63163 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50236 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50264 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53929 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53955 - "GET /health HTTP/1.1" 200 OK
