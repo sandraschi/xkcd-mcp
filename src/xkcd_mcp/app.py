@@ -71,7 +71,13 @@ def build_app() -> Starlette:
     middleware = [
         Middleware(
             CORSMiddleware,
-            allow_origins=["*"],
+            allow_origins=[
+                "http://127.0.0.1:10779",
+                "http://localhost:10779",
+                "tauri://localhost",
+                "http://tauri.localhost",
+                "https://tauri.localhost",
+            ],
             allow_credentials=True,
             allow_methods=["*"],
             allow_headers=["*"],
