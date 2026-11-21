@@ -2,29 +2,50 @@
 
 Curated reference for agents and indexers. **Version** tracks `pyproject.toml` / `xkcd_mcp.__version__`.
 
-## Tools (Discrete Surface v0.2.0)
+## Tools
 
-All tools provide **Prefab UI (Rich In-Chat Comics)** support when the `apps` extra is installed (`uv sync --extra apps`) and `XKCD_PREFAB_APPS` is not `0`. The rich view includes a high-res image, alt text, and interactive links.
+All tools provide **Prefab UI (Rich In-Chat Comics)** support when `prefab-ui` is installed and `XKCD_PREFAB_APPS` is not `0`.
 
 ### `xkcd_latest`
 **Description:** Fetch the most recent comic metadata and image.
-**Arguments:** None.
+**Arguments:**
+- `include_explanation` (`bool`, default `False`): Also fetch the explainxkcd explanation text.
 
 ### `xkcd_get`
 **Description:** Fetch a specific xkcd comic by its number.
 **Arguments:**
 - `comic_number` (`int`): Required. Valid comic index (1 ... latest).
+- `include_explanation` (`bool`, default `False`): Also fetch the explainxkcd explanation text.
+
+### `xkcd_explain`
+**Description:** Fetch the explainxkcd explanation, transcript, and trivia for a comic via the MediaWiki JSON API. Essential for understanding obscure xkcd comics.
+**Arguments:**
+- `comic_number` (`int | None`, default `None`): Comic index (>= 1). Defaults to the latest comic when omitted.
+- `include_transcript` (`bool`, default `True`): Include the explainxkcd transcript section.
+- `include_trivia` (`bool`, default `False`): Include the explainxkcd trivia section.
+
+### `xkcd_search`
+**Description:** Search for xkcd comics by topic using explainxkcd MediaWiki full-text search.
+**Arguments:**
+- `query` (`str`): Search query (e.g. `"aliens"`, `"compiling"`).
 
 ### `xkcd_random`
 **Description:** Fetch a random surprise comic from the collection.
-**Arguments:** None.
+**Arguments:**
+- `include_explanation` (`bool`, default `False`): Also fetch the explainxkcd explanation text.
+
+### `show_comic_prefab_card`
+**Description:** Render a rich in-chat Prefab card for a comic (random if `comic_number` is omitted).
+**Arguments:**
+- `comic_number` (`int | None`, default `None`): Optional comic index.
+- `include_explanation` (`bool`, default `False`): Also include the explainxkcd explanation.
 
 ### `xkcd_help`
 **Description:** Interactive usage guide and system configuration.
 **Arguments:** None.
 **Returns:** Text help + a rich Prefab card with port assignments and links.
 
-**Behavior:** Calls xkcd’s official JSON API only (`https://xkcd.com/.../info.0.json`). `random` uses the current comic to bound the range.
+**Behavior:** Calls xkcd's official JSON API (`https://xkcd.com/.../info.0.json`) for comic metadata/images and explainxkcd's MediaWiki JSON API (`https://www.explainxkcd.com/wiki/api.php`) for search, explanations, transcripts, and trivia. No HTML page scraping.
 **Success response:** `ToolResult` containing `text` summary and optional `structured_content` (PrefabApp).
 **Errors:** `ToolResult` with `is_error=True` and descriptive error message.
 
@@ -71,9 +92,9 @@ Invoke-WebRequest -Uri http://127.0.0.1:10778/health -UseBasicParsing
 
 ## Architecture
 
-- **`xkcd_mcp.server`** — FastMCP instance + four discrete tools (`xkcd_latest`, `xkcd_get`, `xkcd_random`, `xkcd_help`).
-- **`xkcd_mcp.app`** — FastAPI: `/health`, `/`, `POST /api/comic`, mounts MCP app at `XKCD_MCP_HTTP_PATH`.
-- **`xkcd_mcp.xkcd_api`** — httpx async client, User-Agent string, no scraping.
+- **`xkcd_mcp.server`** — FastMCP instance + tools (`xkcd_latest`, `xkcd_get`, `xkcd_explain`, `xkcd_search`, `xkcd_random`, `show_comic_prefab_card`, `xkcd_help`).
+- **`xkcd_mcp.app`** — Starlette: `/health`, `/`, `POST /api/comic`, `GET /api/explain/{comic_number}`, mounts MCP app at `XKCD_MCP_HTTP_PATH`.
+- **`xkcd_mcp.xkcd_api`** — httpx async client for xkcd JSON API and explainxkcd MediaWiki JSON API (no HTML page scraping).
 - **`xkcd_mcp.__main__`** — CLI: `--serve` → uvicorn; else `mcp.run_stdio_async()`.
 - **`web_sota/`** — Vite + React; dev server proxies `/api` and `/health` to `127.0.0.1:10778`.
 

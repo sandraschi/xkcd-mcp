@@ -1,6 +1,6 @@
 # xkcd-mcp
 
-Comics for your LLM via the official xkcd JSON API - no scraping.
+Comics and explanations for your LLM via the official xkcd JSON API and explainxkcd MediaWiki JSON API - no HTML page scraping.
 
 <p align="center">
   <a href="https://github.com/casey/just"><img src="https://img.shields.io/badge/just-ready_to_go-7c5cfc?style=flat-square&logo=just&logoColor=white" alt="Just"></a>
@@ -24,7 +24,7 @@ You get a small **Vite** dashboard with a comic-panel **hero**: stick people, a 
 
 > **Alt text (the app):** A tiny server labeled JSON gets enthusiastic waves while someone negotiates with the universe. Hover tooltips not included; thats what the comic **alt** is for.
 
-No scraping. No Explainxkcd body fetch. Were not here to parse HTML like its 2003.
+No HTML page scraping. Explanations, transcripts, trivia, and topic search are fetched cleanly via the official **explainxkcd MediaWiki JSON API** (`/wiki/api.php`), so even the most obscure math, physics, or inside-joke xkcd makes sense.
 
 **Repo:** [github.com/sandraschi/xkcd-mcp](https://github.com/sandraschi/xkcd-mcp)
 
@@ -48,17 +48,19 @@ If you don't have `just` installed:
 
 ### What it is
 
-- **MCP server + HTTP API** exposing xkcd metadata and image URLs via the **official** API and **explainxkcd** semantic search.
-- **Web UI** calls `POST /api/comic` with the same operations as the tool (`latest`, `random`, `by_number`, `search`).
+- **MCP server + HTTP API** exposing xkcd metadata and image URLs via the **official** xkcd JSON API, plus **explainxkcd** explanations, transcripts, trivia, and topic search via MediaWiki JSON API.
+- **Web UI** calls `POST /api/comic` with `current`, `random`, `by_number`, and `explain` (and `GET /api/explain/{comic_number}`).
 
 ### MCP tools
 
 | Tool | Description | Arguments |
 |------|-------------|-----------|
-| `xkcd_latest` | Fetch the most recent comic. | None |
-| `xkcd_get` | Fetch a specific comic by number. | `comic_number` (int) |
-| `xkcd_random` | Fetch a random surprise comic. | None |
+| `xkcd_latest` | Fetch the most recent comic. | `include_explanation` (bool, optional) |
+| `xkcd_get` | Fetch a specific comic by number. | `comic_number` (int), `include_explanation` (bool, optional) |
+| `xkcd_explain` | Fetch explainxkcd explanation, transcript, and trivia (defaults to latest). | `comic_number` (int, optional), `include_transcript` (bool), `include_trivia` (bool) |
+| `xkcd_random` | Fetch a random surprise comic. | `include_explanation` (bool, optional) |
 | `xkcd_search` | Search comics by topic (aliens, climate). | `query` (str) |
+| `show_comic_prefab_card` | Render a rich in-chat Prefab card for a comic. | `comic_number` (int, optional), `include_explanation` (bool, optional) |
 | `xkcd_help` | Display usage guide and system info. | None |
 
 ### Prefab UI (Rich In-Chat Comics)

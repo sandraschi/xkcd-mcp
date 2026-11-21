@@ -59,9 +59,20 @@ type Comic = {
   explainxkcd_url?: string;
 };
 
+type Explanation = {
+  num: number;
+  title?: string;
+  explanation?: string;
+  transcript?: string;
+  trivia?: string;
+  explainxkcd_url?: string;
+};
+
 export default function App() {
   const [busy, setBusy] = useState(false);
+  const [explainBusy, setExplainBusy] = useState(false);
   const [comic, setComic] = useState<Comic | null>(null);
+  const [explanation, setExplanation] = useState<Explanation | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [numInput, setNumInput] = useState("");
 
@@ -69,6 +80,7 @@ export default function App() {
     setBusy(true);
     setErr(null);
     setComic(null);
+    setExplanation(null);
     try {
       const r = await fetch(API_BASE + "/api/comic", {
         method: "POST",
@@ -91,6 +103,31 @@ export default function App() {
     }
   }, []);
 
+  const loadExplanation = useCallback(async (n: number) => {
+    setExplainBusy(true);
+    setErr(null);
+    try {
+      const r = await fetch(API_BASE + "/api/comic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          operation: "explain",
+          comic_number: n,
+        }),
+      });
+      const j = (await r.json()) as Explanation & { success?: boolean; error?: string };
+      if (!j.success) {
+        setErr(j.error ?? "Failed to load explanation");
+        return;
+      }
+      setExplanation(j);
+    } catch (e) {
+      setErr(String(e));
+    } finally {
+      setExplainBusy(false);
+    }
+  }, []);
+
   return (
     <div className="app-container">
       <header className="hero">
@@ -102,7 +139,7 @@ export default function App() {
               Comics for your LLM. Official API, unofficial amount of stick-figure drama.
             </p>
             <p className="hero__footnote">
-              Official JSON API only — no scraping.{" "}
+              Official xkcd JSON API + explainxkcd MediaWiki API — no HTML scraping.{" "}
               <a href="https://github.com/sandraschi/xkcd-mcp" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
@@ -183,22 +220,55 @@ export default function App() {
             <a href={comic.explainxkcd_url} target="_blank" rel="noopener noreferrer">
               explainxkcd
             </a>
+            {" · "}
+            <button
+              type="button"
+              className="btn-primary"
+              disabled={explainBusy}
+              onClick={() => void loadExplanation(comic.num)}
+              style={{ marginLeft: 8, padding: "4px 10px", fontSize: "0.85rem" }}
+            >
+              {explainBusy ? "Loading..." : "Explain"}
+            </button>
           </p>
+          {explanation && explanation.num === comic.num && (
+            <section
+              className="comic-explanation"
+              style={{ marginTop: 16, textAlign: "left", whiteSpace: "pre-wrap", lineHeight: 1.5 }}
+            >
+              <h3>Explanation (explainxkcd)</h3>
+              <p>{explanation.explanation || "No explanation available."}</p>
+              {explanation.transcript && (
+                <details style={{ marginTop: 8 }}>
+                  <summary>Transcript</summary>
+                  <p style={{ marginTop: 6 }}>{explanation.transcript}</p>
+                </details>
+              )}
+              {explanation.trivia && (
+                <details style={{ marginTop: 8 }}>
+                  <summary>Trivia</summary>
+                  <p style={{ marginTop: 6 }}>{explanation.trivia}</p>
+                </details>
+              )}
+            </section>
+          )}
         </article>
       )}
 
       <details className="mcp-box">
-        <summary>MCP Server Details (v0.2.0)</summary>
+        <summary>MCP Server Details (v0.4.0)</summary>
         <div className="mcp-details-content">
           <p>
             Endpoint: <code>http://127.0.0.1:10778/mcp</code>
           </p>
-          <p style={{ marginTop: 8, fontWeight: "bold" }}>Discrete Tools Table (SOTA v13.1):</p>
+          <p style={{ marginTop: 8, fontWeight: "bold" }}>Discrete Tools Table:</p>
           <ul style={{ paddingLeft: 18 }}>
             <li><code>xkcd_latest</code> — Fetch the current comic</li>
-            <li><code>xkcd_get</code> — Get specific comic index</li>
+            <li><code>xkcd_get</code> — Get specific comic by number</li>
+            <li><code>xkcd_explain</code> — Fetch explainxkcd explanation, transcript &amp; trivia</li>
+            <li><code>xkcd_search</code> — Search comics by topic via explainxkcd</li>
             <li><code>xkcd_random</code> — Surprise random comic</li>
-            <li><code>xkcd_help</code> — Interactive guide & port info</li>
+            <li><code>xkcd_help</code> — Interactive guide &amp; port info</li>
           </ul>
         </div>
       </details>

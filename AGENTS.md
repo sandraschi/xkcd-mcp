@@ -1,7 +1,7 @@
 # xkcd-mcp — Agent Guide
 
 ## Overview
-FastMCP 3.2 xkcd server — official JSON API only (current / by number / random), no HTML scraping.
+FastMCP 3.4 xkcd server - official xkcd.com JSON API + explainxkcd.com MediaWiki JSON API (current / by number / random / search / explain), no HTML page scraping.
 
 ## Entry Points
 - `uv run xkcd-mcp` → `xkcd_mcp.__main__:main`

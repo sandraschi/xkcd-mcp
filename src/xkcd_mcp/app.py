@@ -11,7 +11,7 @@ from starlette.routing import Mount, Route
 
 from xkcd_mcp.config import load_settings
 from xkcd_mcp.server import mcp
-from xkcd_mcp.xkcd_api import fetch_by_number, fetch_current, fetch_random
+from xkcd_mcp.xkcd_api import fetch_by_number, fetch_current, fetch_explanation, fetch_random
 
 mcp_http = mcp.http_app(path="/")
 
@@ -49,7 +49,7 @@ async def api_comic(request: Request) -> JSONResponse:
         return JSONResponse({"success": False, "error": "invalid JSON body"}, status_code=400)
 
     op = body.get("operation")
-    if op == "current":
+    if op in ("current", "latest"):
         return JSONResponse(await fetch_current())
     if op == "random":
         return JSONResponse(await fetch_random())
@@ -58,7 +58,22 @@ async def api_comic(request: Request) -> JSONResponse:
         if num is None:
             return JSONResponse({"success": False, "error": "comic_number required"}, status_code=400)
         return JSONResponse(await fetch_by_number(int(num)))
+    if op == "explain":
+        num = body.get("comic_number")
+        if num is None:
+            cur = await fetch_current()
+            if not cur.get("success"):
+                return JSONResponse(cur, status_code=502)
+            num = int(cur["comic"]["num"])
+        return JSONResponse(await fetch_explanation(int(num)))
     return JSONResponse({"success": False, "error": f"unknown operation: {op!r}"}, status_code=400)
+
+
+async def api_explain(request: Request) -> JSONResponse:
+    comic_number = int(request.path_params["comic_number"])
+    res = await fetch_explanation(comic_number)
+    status = 200 if res.get("success") else (404 if res.get("error_type") == "not_found" else 400)
+    return JSONResponse(res, status_code=status)
 
 
 def build_app() -> Starlette:
@@ -91,6 +106,7 @@ def build_app() -> Starlette:
             Route("/", root),
             Route("/health", health),
             Route("/api/comic", api_comic, methods=["POST"]),
+            Route("/api/explain/{comic_number:int}", api_explain, methods=["GET"]),
             Mount(path, app=mcp_http),
         ],
     )

@@ -1,6 +1,6 @@
 # xkcd-mcp
 
-> FastMCP 3.1 server: xkcd comic metadata via **xkcd.com** official `info.0.json` only (no HTML scraping). Dual transport: **stdio** default, **HTTP** with MCP at `/mcp`. Optional Vite dashboard on **10779** proxied to the API on **10778**.
+> FastMCP 3.4 server: xkcd comic metadata via **xkcd.com** official `info.0.json` plus explanations, transcripts, trivia, and topic search via **explainxkcd.com** MediaWiki JSON API (no HTML page scraping). Dual transport: **stdio** default, **HTTP** with MCP at `/mcp`. Optional Vite dashboard on **10779** proxied to the API on **10778**.
 
 **Full detail:** see [`llms-full.txt`](llms-full.txt).
 
@@ -10,11 +10,14 @@
 - [CHANGELOG](CHANGELOG.md)
 - [glama.json](glama.json) — Glama discovery
 
-## Tools (Discrete Surface v0.2.0)
+## Tools
 
-- **`xkcd_latest`** — Fetch current comic.
-- **`xkcd_get`** — Fetch specific comic index.
-- **`xkcd_random`** — Surprise random comic.
+- **`xkcd_latest`** — Fetch current comic (optional `include_explanation=True`).
+- **`xkcd_get`** — Fetch specific comic by number (optional `include_explanation=True`).
+- **`xkcd_explain`** — Fetch explainxkcd explanation, transcript, and trivia for any comic (defaults to latest).
+- **`xkcd_search`** — Search comics by topic via explainxkcd MediaWiki search.
+- **`xkcd_random`** — Surprise random comic (optional `include_explanation=True`).
+- **`show_comic_prefab_card`** — Render rich in-chat Prefab card.
 - **`xkcd_help`** — Rich help card & port info.
 
 ## Ports (fleet range 10700–10800)
